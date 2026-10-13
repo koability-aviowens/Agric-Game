@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agric Science Quiz</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f7fb;--card:#fff;--ink:#14213d;--mut:#5b6785;--pri:#2563eb;--sel:#dbe7ff;--ok:#16a34a;--bad:#dc2626;--bd:#cfd8ea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1729;--card:#1a2540;--ink:#f1f5ff;--mut:#a7b3d1;--pri:#5b8cff;--sel:#2a3d6e;--bd:#33446f}}
+:root[data-theme="dark"]{--bg:#0f1729;--card:#1a2540;--ink:#f1f5ff;--mut:#a7b3d1;--pri:#5b8cff;--sel:#2a3d6e;--bd:#33446f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:700}
+.wrap{max-width:640px;margin:0 auto;padding:16px}
+.card{background:var(--card);border-radius:20px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+h1{font-size:28px;margin:0 0 8px}
+p{color:var(--mut);font-size:18px;line-height:1.4}
+button{font:inherit;cursor:pointer}
+.btn{width:100%;padding:16px;font-size:20px;border:0;border-radius:14px;background:var(--pri);color:#fff;margin-top:16px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:18px}
+.timer{width:64px;height:64px;position:relative;flex:none}
+.timer svg{transform:rotate(-90deg)}
+.timer span{position:absolute;inset:0;display:grid;place-items:center;font-size:22px}
+.q{font-size:22px;line-height:1.35;margin:8px 0 16px}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:14px;margin-bottom:10px;font-size:19px;border:3px solid var(--bd);border-radius:14px;background:var(--card);color:var(--ink)}
+.opt b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--bd)}
+.opt.sel{border-color:var(--pri);background:var(--sel)}
+.opt.sel b{background:var(--pri);color:#fff}
+.bar{height:8px;background:var(--bd);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--pri);transition:width .3s}
+.big{font-size:64px;text-align:center;margin:12px 0}
+.center{text-align:center}
+.rev{margin-top:16px;font-size:17px}
+.rev div{padding:10px;border-radius:10px;margin-bottom:8px;background:var(--bg)}
+.hide{display:none}
+</style></head><body><div class="wrap">
+
+<div id="start" class="card center">
+<h1>🌱 Agric Science Quiz</h1>
+<p>50 questions • 30 seconds each.<br>Pick an answer, then tap <b>Next</b>. Your score shows at the end.</p>
+<button class="btn" onclick="begin()">Start Quiz</button>
+</div>
+
+<div id="quiz" class="card hide">
+<div class="top"><div id="count"></div><div class="timer"><svg width="64" height="64"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--bd)" stroke-width="6"/><circle id="ring" cx="32" cy="32" r="28" fill="none" stroke="var(--pri)" stroke-width="6" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="0"/></svg><span id="t">30</span></div></div>
+<div class="bar"><i id="prog"></i></div>
+<div class="q" id="q"></div>
+<div id="opts"></div>
+<button class="btn" id="next" onclick="next()" disabled>Next</button>
+</div>
+
+<div id="end" class="card hide center">
+<h1>Quiz Complete!</h1>
+<div class="big" id="score"></div>
+<p id="pct"></p>
+<p id="msg"></p>
+<button class="btn" onclick="toggleRev()">Review Answers</button>
+<div id="rev" class="rev hide" style="text-align:left"></div>
+<button class="btn" onclick="begin()">Play Again</button>
+</div>
+
+</div>
+<script>
+const Q=`Agricultural ecology is the study of the relationship between farm organisms and their:|Natural environment|Bank accounts|Machines only|Markets|0
+Which is a climatic factor affecting agriculture?|Rainfall|Earthworms|Soil pH|Weeds|0
+Which climatic factor supplies water for crops and livestock?|Wind|Rainfall|Topography|Sunlight|1
+Which climatic factor affects seed germination, growth rate and flowering?|Temperature|Soil texture|Pathogens|Drainage|0
+Which climatic factor influences evaporation, crop diseases and storage of products?|Relative humidity|Wind|Slope|Soil colour|0
+Sunlight provides energy for:|Erosion|Photosynthesis|Leaching|Liming|1
+Wind can influence crop pollination, lodging and the spread of:|Soil nutrients|Some pests and diseases|Rocks|Fertilizer|1
+Topography refers to the:|Steepness of slopes|Amount of rainfall|Soil colour|Number of weeds|0
+Edaphic factors are ___ factors.|Climatic|Soil|Biotic|Economic|1
+Soil texture is the proportion of:|Sand, silt and clay|Water and air|Humus and rock|Iron and zinc|0
+Soil structure is the arrangement of soil particles into:|Aggregates|Liquids|Gases|Fossils|0
+Soil pH indicates whether soil is:|Hot or cold|Acidic, alkaline or neutral|Wet or dry|Rocky or sandy|1
+Soil drainage is the ability of soil to:|Remove excess water|Grow weeds|Make rocks|Store fossils|0
+Which is a biotic factor?|Rainfall|Pathogens|Soil pH|Sunlight|1
+Pathogens are disease organisms such as:|Rocks and sand|Fungi, bacteria and viruses|Wind and rain|Lime and gypsum|1
+Which is a beneficial organism on the farm?|Weeds|Earthworms|Pests|Pathogens|1
+Environmental factors affect farm production by influencing:|Growth and development of crops and animals|Only the price of food|Only school fees|Nothing|0
+Environmental factors help determine the type of crops or livestock:|Suitable for an area|Sold in shops|Seen on TV|Named by the government|0
+Soil is the upper layer of the earth that supports:|Growth of plants|Growth of fossils|Movement of wind|Formation of magma|0
+Rock is a naturally occurring solid made up of:|Minerals|Humus|Water|Plastic|0
+Igneous rock is formed from:|Molten magma|Layers of mud|Fossils|Humus|0
+Igneous rock is also called primary rock or:|Daughter rock|Mother rock|Soft rock|Water rock|1
+An example of igneous rock is:|Granite|Limestone|Sandstone|Clay|0
+Sedimentary rock forms when tiny pieces pile up in layers and:|Boil|Compress and cement together|Burn|Melt|1
+The ONLY type of rock where you can find fossils is:|Igneous|Sedimentary|Metamorphic|Granite|1
+Examples of sedimentary rock are:|Limestone and sandstone|Granite only|Magma and lava|Humus and clay|0
+Metamorphic rock is formed by intense heat and pressure that:|Change existing rocks without melting them|Create fossils|Melt rocks into magma|Wash rocks away|0
+Which soil is a mixture of sand, silt and clay and is best for farming?|Loam soil|Sandy soil|Clay soil|Rocky soil|0
+Which soil has large particles, drains fast and holds very little water?|Clay soil|Sandy soil|Loam soil|Peat soil|1
+Which soil has the smallest particles and feels sticky when wet?|Sandy soil|Clay soil|Loam soil|Gravel|1
+Clay soil is good for crops like:|Rice|Cactus|Cassava only|Pineapple only|0
+A soil profile is a vertical section of soil from the surface down to the:|Sky|Parent rock or bedrock|Ocean|Roots|1
+The O horizon is the:|Organic layer|Bedrock|Subsoil|Weathered rock|0
+The A horizon is also called the:|Subsoil|Topsoil|Bedrock|Parent material|1
+Which horizon contains most plant roots and microorganisms?|A horizon|B horizon|C horizon|R horizon|0
+The B horizon is the:|Topsoil|Subsoil|Organic layer|Bedrock|1
+The B horizon is also called the layer of:|Illuviation|Decay|Fossils|Burning|0
+The C horizon is made of:|Weathered parent material|Fresh humus|Plant roots|Water|0
+The R horizon is the:|Parent bedrock|Topsoil|Organic layer|Subsoil|0
+Dark brown or black soil colour indicates:|High organic matter|Waterlogging|Oxidized iron|No nutrients|0
+Reddish soil colour indicates:|Oxidized iron|Waterlogging|Humus|Sand|0
+Grey soil colour indicates:|Waterlogging|High organic matter|Oxidized iron|Fertile soil|0
+Soil fertility is the ability of a soil to supply essential:|Plant nutrients|Rocks|Wind|Rain|0
+Which is a primary (major) nutrient?|Nitrogen|Calcium|Iron|Zinc|0
+Which nutrient supports root growth and seed formation?|Nitrogen|Phosphorus|Chlorine|Boron|1
+Nitrogen promotes leafy growth and:|Protein formation|Rock formation|Erosion|Drainage|0
+Which is a secondary nutrient?|Potassium|Magnesium|Phosphorus|Nitrogen|1
+Which secondary nutrient forms part of chlorophyll?|Calcium|Magnesium|Sulphur|Iron|1
+Which is a way of maintaining soil fertility?|Crop rotation, especially with legumes|Bush burning|Overgrazing|Deforestation|0
+Which is a cause of soil erosion?|Planting cover crops|Overgrazing|Using organic manure|Crop rotation|1`.split("\n").map(l=>{const p=l.split("|");return{q:p[0],o:p.slice(1,5),a:+p[5]}});
+const L="ABCD",T=30;
+let i=0,sel=null,left=T,iv=null,ans=[];
+const $=id=>document.getElementById(id);
+function show(id){["start","quiz","end"].forEach(s=>$(s).classList.toggle("hide",s!==id))}
+function begin(){i=0;ans=[];$("rev").classList.add("hide");show("quiz");load()}
+function load(){
+ sel=null;left=T;const x=Q[i];
+ $("count").textContent="Question "+(i+1)+" of "+Q.length;
+ $("prog").style.width=(i/Q.length*100)+"%";
+ $("q").textContent=x.q;
+ $("opts").innerHTML="";
+ x.o.forEach((t,k)=>{const b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+L[k]+"</b><span></span>";b.lastChild.textContent=t;b.onclick=()=>pick(k);$("opts").appendChild(b)});
+ $("next").textContent=i==Q.length-1?"Submit":"Next";
+ $("next").disabled=true;
+ tick();clearInterval(iv);iv=setInterval(()=>{left--;tick();if(left<=0)next()},1000);
+}
+function tick(){$("t").textContent=left;$("ring").style.strokeDashoffset=176*(1-left/T);$("ring").style.stroke=left<=10?"var(--bad)":"var(--pri)"}
+function pick(k){sel=k;[...$("opts").children].forEach((b,j)=>b.classList.toggle("sel",j==k));$("next").disabled=false}
+function next(){
+ clearInterval(iv);ans[i]=sel;
+ if(i<Q.length-1){i++;load()}else finish();
+}
+function finish(){
+ const s=ans.reduce((n,a,k)=>n+(a===Q[k].a?1:0),0),p=Math.round(s/Q.length*100);
+ $("score").textContent=s+" / "+Q.length;
+ $("pct").textContent=p+"%";
+ $("msg").textContent=p>=80?"🌟 Excellent work!":p>=60?"👍 Good job! Keep practising.":p>=40?"🙂 Fair attempt. Revise and try again.":"📚 Keep studying, you can do better!";
+ $("rev").innerHTML="";
+ Q.forEach((x,k)=>{const d=document.createElement("div"),ok=ans[k]===x.a;
+  d.textContent=(ok?"✅ ":"❌ ")+(k+1)+". "+x.q+" — Answer: "+x.o[x.a]+(ok?"":(ans[k]==null?" (no answer)":" (you chose: "+x.o[ans[k]]+")"));
+  $("rev").appendChild(d)});
+ show("end");
+}
+function toggleRev(){$("rev").classList.toggle("hide")}
+</script></body></html>
